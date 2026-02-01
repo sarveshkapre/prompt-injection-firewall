@@ -1,0 +1,26 @@
+listen_addr: ":8080"
+upstream: "https://api.openai.com"
+audit_log_path: "audit.jsonl"
+max_body_bytes: 1048576
+approval:
+  enabled: true
+  token: "change-me"
+  ttl: 10m
+headers:
+  add_request_id_header: true
+rules:
+  - name: "deny_system_override"
+    stage: "request"
+    action: "deny"
+    match:
+      pattern: "(?i)ignore (all|any) (previous|prior) instructions"
+  - name: "approve_tool_calls"
+    stage: "request"
+    action: "approve"
+    match:
+      tool_names: ["file_write", "exec_command", "mcp"]
+  - name: "allow_default"
+    stage: "request"
+    action: "allow"
+    match:
+      pattern: ".*"
