@@ -25,3 +25,6 @@ check: lint typecheck test build
 release:
 	mkdir -p dist
 	go build -o dist/$(APP_NAME) ./cmd/$(APP_NAME)
+
+smoke:
+	BASE_URL=http://localhost:8080 APPROVAL_TOKEN=change-me ./scripts/smoke.sh

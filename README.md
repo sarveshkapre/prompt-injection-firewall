@@ -16,6 +16,13 @@ make dev
 
 Then send requests to `http://localhost:8080` (it will forward to the configured upstream).
 
+## Local mock upstream
+Run a local upstream for testing:
+```bash
+go run ./cmd/mock-upstream
+```
+Then set `upstream: "http://localhost:9090"` in `config.yaml`.
+
 ## Approval flow
 If a rule returns `approve`, the firewall responds with HTTP 202:
 ```json
@@ -27,6 +34,12 @@ Approve the request by calling:
 curl -s -X POST http://localhost:8080/approve \
   -H 'X-Approval-Token: change-me' \
   -d '{"approval_id":"..."}'
+```
+
+## Smoke test
+With the firewall running and approvals enabled:
+```bash
+make smoke
 ```
 
 ## Configuration
